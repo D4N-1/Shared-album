@@ -1,0 +1,15 @@
+# Dependencies
+
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+node_modules
+
+
+# Build
+
+dist
+
+# Env
+
+.env
