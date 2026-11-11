@@ -11,5 +11,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+  },
+  "pnpm": {
+    "overrides": {
+      "@nestjs/common": "$@nestjs/common"
+    }
   }
 }
