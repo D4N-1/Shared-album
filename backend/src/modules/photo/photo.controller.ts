@@ -51,7 +51,7 @@ export class PhotoController {
         })
     )
     async uploadPhoto(
-        @UploadedFile() file: any,
+        @UploadedFile() file: Express.Multer.File,
         @Body() createPhoto: CreatePhotoDto
     ) {
         return this.photoService.savePhoto(createPhoto, file)

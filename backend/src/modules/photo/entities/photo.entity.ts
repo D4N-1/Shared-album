@@ -24,6 +24,9 @@ export class PhotoEntity {
     @Column({ type: 'enum', enum: PhotoStatus, default: PhotoStatus.PENDING })
     status: PhotoStatus;
 
+    @Column({ name: 'mime_type' })
+    mimeType: string;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;
 

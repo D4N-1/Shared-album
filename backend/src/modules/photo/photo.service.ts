@@ -1,13 +1,18 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { randomUUID } from "node:crypto";
 import * as fs from "node:fs/promises";
 import { Repository } from "typeorm";
+import { ResAllInterface } from "../../common/interfaces/res-all.interface.js";
 import { ResCreateInterface } from "../../common/interfaces/res-create.interface.js";
 import { CreatePhotoDto } from "./dto/create.dto.js";
-import { PhotoEntity } from "./entities/photo.entity.js";
+import { UpdatePhotoDto } from "./dto/update.dto.js";
+import { PhotoEntity, PhotoStatus } from "./entities/photo.entity.js";
 
 
+interface findAllOptions {
+    limit: number|null
+}
 
 @Injectable()
 export class PhotoService {
@@ -32,7 +37,22 @@ export class PhotoService {
     }
 
 
-    async savePhoto(createPhoto: CreatePhotoDto, file: any): Promise<ResCreateInterface> {
+    findOneBy = {
+
+        uuid: async(uuid: string): Promise<PhotoEntity> => {
+            const photo = await this.photoRepository.findOne({
+                where: { uuid }
+            })
+
+            if (!photo) throw new NotFoundException('No se encontró esa foto')
+
+            return photo
+        }
+
+    }
+
+
+    async savePhoto(createPhoto: CreatePhotoDto, file: Express.Multer.File): Promise<ResCreateInterface> {
 
         const { uuid= null } = createPhoto;
 
@@ -51,7 +71,8 @@ export class PhotoService {
 
         const newPhoto = this.photoRepository.create({
             name: file.filename,
-            uuid: finalUuid
+            uuid: finalUuid,
+            mimeType: file.mimetype
         })
 
         await this.photoRepository.save(newPhoto);
@@ -62,5 +83,44 @@ export class PhotoService {
             data: newPhoto
         }
 
+    }
+
+    async updatePhoto(updatePhoto: UpdatePhotoDto): Promise<ResCreateInterface> {
+
+        const { status } = updatePhoto;
+
+        const photo = await this.findOneBy.uuid(updatePhoto.uuid!)
+
+        const newData: Partial<PhotoEntity> = { ...updatePhoto }
+
+        newData.status = status;
+
+        const editPhoto = this.photoRepository.merge(photo, newData)
+
+        return {
+            message: 'La foto ha sido modificada con exito',
+            data: await this.photoRepository.save(editPhoto)
+        }
+    }
+
+    async findAllPending(options?: findAllOptions): Promise<ResAllInterface> {
+
+
+        const [data, total] = await this.photoRepository.findAndCount({
+            take: options?.limit ?? undefined,
+            where: { status: PhotoStatus.PENDING },
+            order: { index: 'ASC' }
+        })
+
+        return {
+            data,
+            meta: {
+                total,
+                count: data.length,
+                perPage: 0,
+                totalPages: 0,
+                currentPage: 0
+            }
+        }
     }
 }

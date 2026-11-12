@@ -11,6 +11,9 @@ import { PhotoService } from "./photo.service.js";
         TypeOrmModule.forFeature([PhotoEntity])
     ],
     controllers: [ PhotoController ],
-    providers: [ PhotoService ]
+    providers: [ PhotoService ],
+    exports: [
+        PhotoService
+    ]
 })
 export class PhotoModule { }
