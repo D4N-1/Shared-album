@@ -1,3 +1,7 @@
+@if ( showWelcome() ) {
+    <app-welcome-splash (finished)="onWelcome()"></app-welcome-splash>
+}
+
 <!-- VISTA -->
 <main class="main-container" [class.expanded-mode]="isExpanded()">
 
@@ -85,7 +89,9 @@
                 @if ( !isCameraActive() ) {
                     <span>Activar Cámara</span>
                 } @else {
-                    <span class="shoot-ring"></span>
+                    <section class="shoot-ring">
+                        <img src="/shutter.png" alt="<>">
+                    </section>
                 }
             </button>
 
@@ -96,7 +102,9 @@
                     class="btn-gallery"
                     (click)="openGallery()"
                 >
-                    Subir de Galeria
+
+                    <span>Subir de Galeria</span>
+                    <img src="/frame.png" alt=">"/>
                 </button>
             }
         } @else {

@@ -6,4 +6,8 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   template: '<router-outlet/>',
 })
-export class App { }
+export class App {
+
+  wait = (ms: number): Promise<void> => new Promise( (r) => setTimeout(r, ms) );
+  
+}

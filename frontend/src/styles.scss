@@ -3,17 +3,24 @@
     // LIGHT
     --bg-color-light: hsl(35, 75%, 90%);
     --pl-color-light: hsl(35, 75%, 95%);
+    --cr-color-light: hsl(35, 85%, 45%);
+    --txt-color-light: hsl(45, 35%, 5%);
 
 
     // DARK
-    --bg-color-dark: hsl(51, 5%, 28%);
-    --pl-color-dark: hsl(41, 15%, 33%);
+    --bg-color-dark: hsl(35, 10%, 15%);
+    --pl-color-dark: hsl(35, 5%, 20%);
+    --cr-color-dark: hsl(35, 55%, 45%);
+    --txt-color-dark: hsl(45, 10%, 85%);
 
 
     // COLORS
-    --cr-color: hsl(35, 55%, 55%);
     --bg-color: var(--bg-color-light);
     --pl-color: var(--pl-color-light);
+    --cr-color: var(--cr-color-light);
+    --txt-color: var(--txt-color-light);
+
+    --sakura: hsl(300, 75%, 75%);
 
 
     // FONTS
@@ -23,6 +30,7 @@
 
 * {
     margin: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -30,8 +38,9 @@
     :root {
 
         --bg-color: var(--bg-color-dark);
-        --cr-color: var(--pl-color-dark);
         --pl-color: var(--pl-color-dark);
+        --cr-color: var(--cr-color-dark);
+        --txt-color: var(--txt-color-dark);
 
     }
 }

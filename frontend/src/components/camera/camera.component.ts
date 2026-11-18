@@ -1,20 +1,26 @@
 import { Component, ElementRef, inject, OnDestroy, signal, ViewChild } from "@angular/core";
+import { App } from "../../app/app";
 import { PhotoService } from "../../services/photo.service";
+import { WelcomeSplashComponent } from "../welcome/welcome.component";
 
 
 
 @Component({
     selector: 'app-camera',
     templateUrl: './camera.component.html',
-    styleUrl: './camera.component.scss'
+    styleUrl: './camera.component.scss',
+    imports: [ WelcomeSplashComponent ]
 })
 export class CameraComponent implements OnDestroy {
 
     private photoService = inject(PhotoService);
+    private App = inject(App)
 
     @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
     @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
     @ViewChild('galleryElement') galleryElement!: ElementRef<HTMLInputElement>;
+
+    private showWelcome = signal<boolean>(true);
 
 
     private isCameraActive = signal<boolean>(false);
@@ -34,6 +40,12 @@ export class CameraComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.stopCamera()
+    }
+
+    onWelcome() {
+        this.showWelcome.set(false)
+
+        if ( !this.isCameraActive() ) this.startCamera()
     }
     
     async startCamera(): Promise<void> {
@@ -58,17 +70,19 @@ export class CameraComponent implements OnDestroy {
                 });
 
             } catch(error: any) {
-                this.errorMessage.set(error.message)
+                //this.errorMessage.set(error.message)
                 console.error(error)
             }
 
         }
 
-        this.isCameraActive.set(true)
+        if ( this.mediaStream ) {
+            this.isCameraActive.set(true)
 
-        setTimeout( () => {
-            if (this.videoElement.nativeElement && this.mediaStream) this.videoElement.nativeElement.srcObject = this.mediaStream
-        })
+            setTimeout( () => {
+                if (this.videoElement.nativeElement && this.mediaStream) this.videoElement.nativeElement.srcObject = this.mediaStream
+            })
+        }
 
     }
 
@@ -86,7 +100,7 @@ export class CameraComponent implements OnDestroy {
         setTimeout(() => this.isSwitchingCamera.set(false), 450);
     }
 
-    capturePhoto(): void {
+    async capturePhoto(): Promise<void> {
         const video = this.videoElement?.nativeElement;
         const canvas = this.canvasElement?.nativeElement;
 
@@ -98,6 +112,7 @@ export class CameraComponent implements OnDestroy {
         const ctx = canvas.getContext('2d');
         if (!ctx) throw new Error('No se pudo obtener el contexto del canvas');
 
+        await this.App.wait(250)
         this.isFlashing.set(true);
         setTimeout(() => this.isFlashing.set(false), 450);
 
@@ -142,11 +157,7 @@ export class CameraComponent implements OnDestroy {
     async handleCameraAction(event: Event): Promise<void> {
         event.stopPropagation();
 
-        if ( !this.isCameraActive() ) {
-          await this.startCamera();
-          this.isExpanded.set(true);
-          return;
-        }
+        if ( !this.isCameraActive() ) return await this.startCamera();
 
         this.capturePhoto();
     }
