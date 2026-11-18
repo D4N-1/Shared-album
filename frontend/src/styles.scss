@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+
+    // LIGHT
+    --bg-color-light: hsl(35, 75%, 90%);
+    --pl-color-light: hsl(35, 75%, 95%);
+
+
+    // DARK
+    --bg-color-dark: hsl(51, 5%, 28%);
+    --pl-color-dark: hsl(41, 15%, 33%);
+
+
+    // COLORS
+    --cr-color: hsl(35, 55%, 55%);
+    --bg-color: var(--bg-color-light);
+    --pl-color: var(--pl-color-light);
+
+
+    // FONTS
+    --main-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+* {
+    margin: 0;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    :root {
+
+        --bg-color: var(--bg-color-dark);
+        --cr-color: var(--pl-color-dark);
+        --pl-color: var(--pl-color-dark);
+
+    }
+}
+
+
+body {
+
+    font-family: var(--main-font);
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
+
+}

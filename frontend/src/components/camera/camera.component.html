@@ -1,0 +1,139 @@
+<!-- VISTA -->
+<main class="main-container" [class.expanded-mode]="isExpanded()">
+
+    <!-- TITULO -->
+    @if ( !isExpanded() ) {
+        <header class="header-container">
+            <h1>Album Compartido</h1>
+            <p>Captura el momento o sube desde tu galeria</p>
+        </header>
+    }
+
+    <!-- SECCION CAMARA -->
+    <section
+        class="section-camera"
+        [class.is-expanded]="isExpanded()"
+        (click)="onCameraArea()"
+    >
+        <!-- EFECTO FLASH -->
+        <div class="flash-overlay" [class.active]="isFlashing()"></div>
+
+        <!-- CAMBIAR CAMARA (Frontal / Trasera) -->
+        @if ( isCameraActive() && !previewUrl() ) {
+            <button
+                type="button"
+                class="btn-switch-camera"
+                [class.is-spinning]="isSwitchingCamera()"
+                (click)="toggleCameraFacing($event)"
+                aria-label="Cambiar entre cámara frontal y trasera"
+            >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4"/>
+                    <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/>
+                </svg>
+            </button>
+        }
+
+        <!-- CONTRAER -->
+        @if ( isExpanded() && !previewUrl() ) {
+            <button
+                class="btn-collapse"
+                (click)="collapseView($event)"
+                aria-label="Contraer camara">
+                x
+            </button>
+        }
+
+        <video 
+            #videoElement 
+            autoplay 
+            playsinline 
+            muted 
+            class="video-camera" 
+            [class.is-hidden]="!!previewUrl()"
+            [class.is-mirror]="facingMode() === 'user'"
+            aria-label="Camara video">
+        </video>
+
+        <!-- PREVIEW (Con animación de entrada fluida) -->
+        @if ( previewUrl() ) {
+           <img [src]="previewUrl()" alt="Vista previa" class="img-preview"/>
+        }
+
+        <!-- PLACEHOLDER -->
+        @if ( !isCameraActive() && !previewUrl() ) {
+           <section class="section-placeholder">
+               <img src="/camera.png" alt="-o-" class="camera-hint-icon"/>
+               <span>Toca para activar la cámara</span>
+           </section>
+        }
+
+        <canvas #canvasElement hidden></canvas>
+    </section>
+
+    <footer class="footer-controls">
+        <!-- SHOOT -->
+        @if ( !previewUrl() ) {
+            <button
+                name="btn-capture"
+                type="button"
+                class="btn-capture"
+                [class.ready]="isCameraActive()"
+                [attr.aria-label]="isCameraActive()"
+                (click)="handleCameraAction($event)"
+            >
+                @if ( !isCameraActive() ) {
+                    <span>Activar Cámara</span>
+                } @else {
+                    <span class="shoot-ring"></span>
+                }
+            </button>
+
+            <!-- LOAD -->
+            @if ( !isExpanded() ) {
+                <button
+                    type="button"
+                    class="btn-gallery"
+                    (click)="openGallery()"
+                >
+                    Subir de Galeria
+                </button>
+            }
+        } @else {
+            <!-- CONFIRM -->
+            <div class="confirm-actions">
+                <button
+                  type="button"
+                  class="btn-discard"
+                  [disabled]="isUploading()"
+                  (click)="discardPhoto()"
+                >
+                    Repetir
+                </button>
+                <button
+                  type="button"
+                  class="btn-confirm"
+                  [disabled]="isUploading()"
+                  (click)="confirmUpload()"
+                >
+                    {{ isUploading() ? 'Subiendo...' : 'Confirmar y subir' }}
+                </button>
+            </div>
+        }
+
+        <!-- HIDDEN INPUT -->
+        <input
+            #galleryElement
+            type="file"
+            accept="image/*"
+            hidden
+            (change)="gallerySelect($event)"
+        >
+    </footer>
+
+    @if ( message() ) {
+        <aside class="aside-message">
+            {{ message() }}
+        </aside>
+    }
+</main>
