@@ -56,12 +56,15 @@ export class DriveService {
     }
     
 
-    async verifyAuth(): Promise<boolean> {
+    async verifyAuth(): Promise<any> {
         try {
 
             const { token } = await this.auth.getAccessToken()
             if (!token) throw new Error('No se pudo tener accesso token')
-            return true
+            return {
+              status: true,
+              message: 'Conexión con Drive activa'
+            }
 
         } catch (error) {
             throw new UnauthorizedException('Authentiaction with Google failed')
