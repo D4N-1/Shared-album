@@ -2,7 +2,6 @@ import { Injectable, InternalServerErrorException, Logger, UnauthorizedException
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { google } from "googleapis";
-import * as fs from "node:fs";
 import * as fsAsync from "node:fs/promises";
 import path, { join } from "node:path";
 import { Readable } from "node:stream";
@@ -29,11 +28,6 @@ export class DriveService {
         private readonly photoService: PhotoService
 
     ) {
-
-
-        const keys = JSON.parse( fs.readFileSync( this.configService.getOrThrow<string>('KEY_PATH'), 'utf-8' ) )
-
-        if (keys.type !== 'service_account') throw new Error('Invalid Credentials: expected a service_account key')
 
 
         this.auth = new google.auth.OAuth2(

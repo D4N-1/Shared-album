@@ -10,6 +10,7 @@ node_modules
 
 dist
 .angular
+tsconfig.build.tsbuildinfo
 
 # Env
 
@@ -24,3 +25,6 @@ keys
 # Uploads
 
 uploads
+
+# logs
+logs
