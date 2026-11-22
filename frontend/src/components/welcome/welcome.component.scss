@@ -1,0 +1,64 @@
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.splash-screen.is-leaving {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 340px;
+  //animation: contentEnter 1s ease-out forwards;
+}
+
+.splash-gif {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  animation: contentEnter 0.8s ease-in forwards;
+}
+
+.splash-title {
+  margin: 0;
+  font-family: var(--main-font);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--cr-color);
+  animation: contentEnter 1.2s ease-out forwards;
+}
+
+.splash-subtitle {
+  margin: 0;
+  font-family: var(--main-font);
+  font-size: 1rem;
+  color: var(--txt-color);
+  line-height: 1.4;
+  animation: contentEnter 2s ease forwards;
+}
+
+@keyframes contentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

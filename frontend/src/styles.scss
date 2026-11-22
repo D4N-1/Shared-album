@@ -5,13 +5,15 @@
     --pl-color-light: hsl(35, 75%, 95%);
     --cr-color-light: hsl(35, 85%, 45%);
     --txt-color-light: hsl(45, 35%, 5%);
+    --white-light: hsl(0, 100%, 100%);
 
 
     // DARK
-    --bg-color-dark: hsl(35, 10%, 15%);
-    --pl-color-dark: hsl(35, 5%, 20%);
-    --cr-color-dark: hsl(35, 55%, 45%);
+    --bg-color-dark: hsl(240, 15%, 10%);
+    --pl-color-dark: hsl(240, 15%, 20%);
+    --cr-color-dark: hsl(45, 85%, 40%);
     --txt-color-dark: hsl(45, 10%, 85%);
+    --white-dark: hsl(0, 0%, 100%);
 
 
     // COLORS
@@ -19,8 +21,10 @@
     --pl-color: var(--pl-color-light);
     --cr-color: var(--cr-color-light);
     --txt-color: var(--txt-color-light);
+    --white: var(--white-light);
 
     --sakura: hsl(300, 75%, 75%);
+
 
 
     // FONTS
@@ -41,6 +45,7 @@
         --pl-color: var(--pl-color-dark);
         --cr-color: var(--cr-color-dark);
         --txt-color: var(--txt-color-dark);
+        --white: var(--white-dark);
 
     }
 }

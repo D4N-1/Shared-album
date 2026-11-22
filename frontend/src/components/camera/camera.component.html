@@ -17,6 +17,7 @@
     <section
         class="section-camera"
         [class.is-expanded]="isExpanded()"
+        [class.camera-active]="isCameraActive()"
         (click)="onCameraArea()"
     >
         <!-- EFECTO FLASH -->
@@ -44,7 +45,7 @@
                 class="btn-collapse"
                 (click)="collapseView($event)"
                 aria-label="Contraer camara">
-                x
+                <img src="/close.png" alt="x" class="close-ring">
             </button>
         }
 
@@ -75,7 +76,7 @@
         <canvas #canvasElement hidden></canvas>
     </section>
 
-    <footer class="footer-controls">
+    <section class="controls">
         <!-- SHOOT -->
         @if ( !previewUrl() ) {
             <button
@@ -97,15 +98,28 @@
 
             <!-- LOAD -->
             @if ( !isExpanded() ) {
-                <button
-                    type="button"
-                    class="btn-gallery"
-                    (click)="openGallery()"
-                >
 
-                    <span>Subir de Galeria</span>
-                    <img src="/frame.png" alt=">"/>
-                </button>
+                <section class="load-section">
+                    <button
+                        type="button"
+                        class="btn-gallery"
+                        (click)="openGallery()"
+                    >
+                        <span>Subir de Galeria</span>
+                        <img class="frame-vector" src="/frame.png" alt="Icono galería" />
+                    </button>
+                
+                    <a
+                        href="https://drive.google.com/drive/u/3/folders/1zLmn-8s2VCKoNE-ZyWqs-taV3WIToYw0"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-gallery btn-icon"
+                        aria-label="Abrir carpeta de Drive"
+                    >
+                        <span>Album</span>
+                        <img src="/favicon.ico" alt="Google Drive" />
+                    </a>
+                </section>
             }
         } @else {
             <!-- CONFIRM -->
@@ -137,7 +151,7 @@
             hidden
             (change)="gallerySelect($event)"
         >
-    </footer>
+    </section>
 
     @if ( message() ) {
         <aside class="aside-message">
@@ -145,3 +159,10 @@
         </aside>
     }
 </main>
+
+<footer>
+    <a class="made-by" href="https://wa.me/573208201009" target="_blank" rel="noopener">
+        <span>Realizado por <strong>Dani Solarte</strong></span>
+        <img class="ws-logo" src="/ws.png" alt="WS">
+    </a>
+</footer>
